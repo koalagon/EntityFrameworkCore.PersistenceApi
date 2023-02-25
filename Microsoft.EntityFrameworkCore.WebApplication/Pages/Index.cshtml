@@ -1,0 +1,104 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+
+<h4>New order</h4>
+<form method="post" asp-page-handler="Add">
+    <input type="text" name="name" />
+    <input type="submit" />
+</form>
+
+<br />
+
+<h4>The first order having "World" name</h4>
+
+<table>
+    <thead>
+        <tr>
+            <th style="padding-right: 10px;">ID</th>
+            <th style="padding-right: 10px;">Name</th>
+            <th style="padding-right: 10px;">AddedAt</th>
+            <th style="padding-right: 10px;">Functions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Order != null)
+        {
+            <tr>
+                <td style="padding-right: 10px;">@Model.Order.Id</td>
+                <td style="padding-right: 10px;">@Model.Order.Name</td>
+                <td style="padding-right: 10px;">@Model.Order.AddedAt</td>
+                <td style="padding-right: 10px;">
+                    <form method="post" asp-page-handler="Delete">
+                        <input type="hidden" name="id" value="@Model.Order.Id" />
+                        <input type="submit" value="Delete" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<br />
+
+<h4>Orders having "Hello" name</h4>
+<table>
+    <thead>
+    <tr>
+        <th style="padding-right: 10px;">ID</th>
+        <th style="padding-right: 10px;">Name</th>
+        <th style="padding-right: 10px;">AddedAt</th>
+        <th style="padding-right: 10px;">Functions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.FilteredOrders)
+    {
+        <tr>
+            <td style="padding-right: 10px;">@item.Id</td>
+            <td style="padding-right: 10px;">@item.Name</td>
+            <td style="padding-right: 10px;">@item.AddedAt</td>
+            <td style="padding-right: 10px;">
+                <form method="post" asp-page-handler="Delete">
+                    <input type="hidden" name="id" value="@item.Id" />
+                    <input type="submit" value="Delete" />
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<br />
+
+<h4>All orders</h4>
+<table>
+    <thead>
+    <tr>
+        <th style="padding-right: 10px;">ID</th>
+        <th style="padding-right: 10px;">Name</th>
+        <th style="padding-right: 10px;">AddedAt</th>
+        <th style="padding-right: 10px;">Functions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.AllOrders)
+    {
+        <tr>
+            <td style="padding-right: 10px;">@item.Id</td>
+            <td style="padding-right: 10px;">@item.Name</td>
+            <td style="padding-right: 10px;">@item.AddedAt</td>
+            <td style="padding-right: 10px;">
+                <form method="post" asp-page-handler="Delete">
+                    <input type="hidden" name="id" value="@item.Id" />
+                    <input type="submit" value="Delete" />
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
