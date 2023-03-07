@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -7,12 +7,14 @@
     <Title>EntityFrameworkCore Persistence Api</Title>
     <Description>Auto-wired EntityFramework repository pattern with unit of work. </Description>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>EntityFramework;Repository;Unit of Work;Autowired</PackageTags>
+    <PackageTags>EntityFramework;Repository;UnitOfWork;Autowired;Soft-Deleted Filter</PackageTags>
     <PackageProjectUrl>https://github.com/koalagon/EntityFrameworkCore.PersistenceApi</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/koalagon/EntityFrameworkCore.PersistenceApi</RepositoryUrl>
     <PackageId>EntityFrameworkCore.PersistenceApi</PackageId>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+	<Version Condition="'$(RELEASE_VERSION)' != ''">$(RELEASE_VERSION)</Version>
+	<VersionPrefix Condition="'$(RELEASE_VERSION)' == ''">1.1.0</VersionPrefix>
   </PropertyGroup>
 
   <ItemGroup>
