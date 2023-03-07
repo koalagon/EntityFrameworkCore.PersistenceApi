@@ -54,4 +54,35 @@ public class IndexModel : PageModel
 }
 ```
 
+# Soft-Deleted Entity
+As a developer, we often forget to filter soft deleted entities. In order to avoid the same issue, I introduced `IDeletable` interface.
+When your entity implements `IDeletable`, UnitOfWork.Queryable will filter out the soft deleted entity automatically.
+```
+public class Order : IDeletable
+{
+    public bool IsDeleted { get; set; } // set true for soft-deleted
+    public DateTime? DeletedAt { get; set; }
+}
+```
+
+```
+public class IndexModel : PageModel
+{
+    private readonly IUnitOfWork _unitOfWork;
+    public IReadOnlyCollection<Order> Orders;
+
+    public IndexModel(IUnitOfWork unitOfWork)
+    {
+        _unitOfWork = unitOfWork;
+    }
+
+    public async Task OnGetAsync()
+    {
+        // Queryable filters out the soft-delete entity automatically.
+        Orders = _unitOfWork.Queryable<Order>().ToList();
+    }
+}
+
+```
+
 Please see the WebApplication project for the demo.
