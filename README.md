@@ -55,7 +55,7 @@ public class IndexModel : PageModel
 ```
 
 # Soft-Deleted Entity
-As a developer, we often forget to filter soft deleted entities. In order to avoid the same issue, I introduced `IDeletable` interface.
+As a developer, we often forget to filter out soft deleted entities. In order to avoid the same mistake, I introduced `IDeletable` interface.
 When your entity implements `IDeletable`, UnitOfWork.Queryable will filter out the soft deleted entity automatically.
 ```
 public class Order : IDeletable
