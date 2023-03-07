@@ -43,13 +43,6 @@ public interface IEpaRepository<TEntity, in TKey> where TEntity : class
     TEntity GetById(TKey key);
 
     /// <summary>
-    /// Returns IQueryable.
-    /// </summary>
-    IQueryable<TEntity> Queryable(Expression<Func<TEntity, bool>>? filter = null,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-        string includeProperties = "");
-
-    /// <summary>
     /// Returns a result set.
     /// </summary>
     IReadOnlyCollection<TEntity> Get(Expression<Func<TEntity, bool>>? filter = null,

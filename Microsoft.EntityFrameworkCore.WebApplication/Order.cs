@@ -1,7 +1,9 @@
-﻿#pragma warning disable CS8618
+﻿using Microsoft.EntityFrameworkCore.PersistenceApi;
+
+#pragma warning disable CS8618
 namespace Microsoft.EntityFrameworkCore.WebApplication
 {
-    public class Order
+    public class Order : IDeletable
     {
         protected Order()
         {
@@ -19,5 +21,9 @@ namespace Microsoft.EntityFrameworkCore.WebApplication
         public string Name { get; set; }
 
         public DateTime AddedAt { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        public DateTime? DeletedAt { get; set; }
     }
 }

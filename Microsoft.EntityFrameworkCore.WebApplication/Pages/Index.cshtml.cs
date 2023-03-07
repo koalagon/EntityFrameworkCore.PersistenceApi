@@ -20,9 +20,9 @@ namespace Microsoft.EntityFrameworkCore.WebApplication.Pages
         public async Task OnGetAsync()
         {
             var orderRepository = _unitOfWork.GetRepository<IOrderRepository>();
-            FilteredOrders = await orderRepository.GetAsync(filter: OrderFilters.NameFilter, orderBy: r => r.OrderByDescending(b => b.AddedAt));
-            AllOrders = await orderRepository.GetAsync();
-            Order = _unitOfWork.GetRepository<IOrderRepository>().Queryable(q => q.Name.Contains("World")).FirstOrDefault();
+            FilteredOrders = await _unitOfWork.Queryable<Order>().Where(OrderFilters.NameFilter).OrderByDescending(b => b.AddedAt).ToListAsync();
+            AllOrders = await _unitOfWork.Queryable<Order>().ToListAsync();
+            Order = _unitOfWork.Queryable<Order>().FirstOrDefault(q => q.Name.Contains("World"));
         }
 
         public async Task<IActionResult> OnPostAddAsync(string name)
@@ -38,6 +38,17 @@ namespace Microsoft.EntityFrameworkCore.WebApplication.Pages
             var orderRepository = _unitOfWork.GetRepository<IOrderRepository>();
             var order = orderRepository.GetById(id);
             orderRepository.Remove(order);
+            await _unitOfWork.SaveChangesAsync();
+
+            return Redirect("./Index");
+        }
+
+        public async Task<IActionResult> OnPostSoftDeleteAsync(Guid id)
+        {
+            var orderRepository = _unitOfWork.GetRepository<IOrderRepository>();
+            var order = orderRepository.GetById(id);
+            order.IsDeleted = true;
+            order.DeletedAt = DateTime.UtcNow;
             await _unitOfWork.SaveChangesAsync();
 
             return Redirect("./Index");

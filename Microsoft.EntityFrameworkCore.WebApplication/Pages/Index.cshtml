@@ -48,28 +48,28 @@
 <h4>Orders having "Hello" name</h4>
 <table>
     <thead>
-    <tr>
-        <th style="padding-right: 10px;">ID</th>
-        <th style="padding-right: 10px;">Name</th>
-        <th style="padding-right: 10px;">AddedAt</th>
-        <th style="padding-right: 10px;">Functions</th>
-    </tr>
+        <tr>
+            <th style="padding-right: 10px;">ID</th>
+            <th style="padding-right: 10px;">Name</th>
+            <th style="padding-right: 10px;">AddedAt</th>
+            <th style="padding-right: 10px;">Functions</th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model.FilteredOrders)
-    {
-        <tr>
-            <td style="padding-right: 10px;">@item.Id</td>
-            <td style="padding-right: 10px;">@item.Name</td>
-            <td style="padding-right: 10px;">@item.AddedAt</td>
-            <td style="padding-right: 10px;">
-                <form method="post" asp-page-handler="Delete">
-                    <input type="hidden" name="id" value="@item.Id" />
-                    <input type="submit" value="Delete" />
-                </form>
-            </td>
-        </tr>
-    }
+        @foreach (var item in Model.FilteredOrders)
+        {
+            <tr>
+                <td style="padding-right: 10px;">@item.Id</td>
+                <td style="padding-right: 10px;">@item.Name</td>
+                <td style="padding-right: 10px;">@item.AddedAt</td>
+                <td style="padding-right: 10px;">
+                    <form method="post" asp-page-handler="Delete">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <input type="submit" value="Delete" />
+                    </form>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 
@@ -78,27 +78,31 @@
 <h4>All orders</h4>
 <table>
     <thead>
-    <tr>
-        <th style="padding-right: 10px;">ID</th>
-        <th style="padding-right: 10px;">Name</th>
-        <th style="padding-right: 10px;">AddedAt</th>
-        <th style="padding-right: 10px;">Functions</th>
-    </tr>
+        <tr>
+            <th style="padding-right: 10px;">ID</th>
+            <th style="padding-right: 10px;">Name</th>
+            <th style="padding-right: 10px;">AddedAt</th>
+            <th style="padding-right: 10px;">Functions</th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model.AllOrders)
-    {
-        <tr>
-            <td style="padding-right: 10px;">@item.Id</td>
-            <td style="padding-right: 10px;">@item.Name</td>
-            <td style="padding-right: 10px;">@item.AddedAt</td>
-            <td style="padding-right: 10px;">
-                <form method="post" asp-page-handler="Delete">
-                    <input type="hidden" name="id" value="@item.Id" />
-                    <input type="submit" value="Delete" />
-                </form>
-            </td>
-        </tr>
-    }
+        @foreach (var item in Model.AllOrders)
+        {
+            <tr>
+                <td style="padding-right: 10px;">@item.Id</td>
+                <td style="padding-right: 10px;">@item.Name</td>
+                <td style="padding-right: 10px;">@item.AddedAt</td>
+                <td style="padding-right: 10px;">
+                    <form method="post" asp-page-handler="Delete" style="display: inline">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <input type="submit" value="Hard Delete" />
+                    </form>
+                    <form method="post" asp-page-handler="SoftDelete" style="display: inline">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <input type="submit" value="Soft Delete" />
+                    </form>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

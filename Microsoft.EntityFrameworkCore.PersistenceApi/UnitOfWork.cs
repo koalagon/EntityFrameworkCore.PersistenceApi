@@ -1,5 +1,6 @@
 ﻿using Castle.DynamicProxy;
 using System.Collections;
+using System.Linq.Dynamic.Core;
 
 namespace Microsoft.EntityFrameworkCore.PersistenceApi;
 
@@ -57,6 +58,13 @@ public class UnitOfWork : IUnitOfWork
     /// <inheritdoc cref="IEpaDbContext.SaveChangesAsync"/>
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) =>
         _dbContext.SaveChangesAsync(cancellationToken);
+
+    /// <inheritdoc cref="IUnitOfWork.Queryable{TEntity}"/>
+    public IQueryable<TEntity> Queryable<TEntity>() where TEntity : class
+    {
+        var queryable = _dbContext.Set<TEntity>().AsNoTracking().AsQueryable();
+        return typeof(TEntity).IsAssignableTo(typeof(IDeletable)) ? queryable.Where($"{nameof(IDeletable.IsDeleted)} == false") : queryable;
+    }
 
     #region Dispose
     private bool _disposed;
