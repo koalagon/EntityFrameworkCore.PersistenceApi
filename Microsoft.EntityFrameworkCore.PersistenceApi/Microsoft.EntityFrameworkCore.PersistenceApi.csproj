@@ -9,13 +9,24 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>EntityFramework;Repository;UnitOfWork;Autowired;Soft-Deleted Filter</PackageTags>
     <PackageProjectUrl>https://github.com/koalagon/EntityFrameworkCore.PersistenceApi</PackageProjectUrl>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/koalagon/EntityFrameworkCore.PersistenceApi</RepositoryUrl>
     <PackageId>EntityFrameworkCore.PersistenceApi</PackageId>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
 	<Version Condition="'$(RELEASE_VERSION)' != ''">$(RELEASE_VERSION)</Version>
-	<VersionPrefix Condition="'$(RELEASE_VERSION)' == ''">1.1.0</VersionPrefix>
+	<VersionPrefix Condition="'$(RELEASE_VERSION)' == ''">1.1.1</VersionPrefix>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Castle.Core" Version="5.1.1" />
