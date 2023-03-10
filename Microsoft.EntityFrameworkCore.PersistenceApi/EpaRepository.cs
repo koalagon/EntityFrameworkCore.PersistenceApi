@@ -52,14 +52,15 @@ internal class EpaRepository<TEntity, TKey> : IEpaRepository<TEntity, TKey> wher
     }
 
     /// <inheritdoc cref="IEpaRepository{TEntity,TKey}.GetById"/>
-    public TEntity GetById(TKey key)
+    public TEntity? GetById(TKey key)
     {
         return _dbContext.Set<TEntity>().Find(key);
     }
 
     /// <inheritdoc cref="IEpaRepository{TEntity,TKey}.Get"/>
     public IReadOnlyCollection<TEntity> Get(Expression<Func<TEntity, bool>>? filter = null,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null, string includeProperties = "")
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null, string includeProperties = "",
+        int? skip = null, int? take = null)
     {
         IQueryable<TEntity> query = _dbContext.Set<TEntity>();
 
@@ -71,12 +72,22 @@ internal class EpaRepository<TEntity, TKey> : IEpaRepository<TEntity, TKey> wher
         query = includeProperties.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
             .Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
 
-        return orderBy != null ? orderBy(query).ToList() : query.ToList();
+        if (orderBy != null)
+        {
+            query = orderBy(query);
+            if (skip.HasValue) query = query.Skip(skip.Value);
+            if (take.HasValue) query = query.Take(take.Value);
+
+            return query.ToList();
+        }
+
+        return query.ToList();
     }
 
     /// <inheritdoc cref="IEpaRepository{TEntity,TKey}.GetAsync"/>
     public async Task<IReadOnlyCollection<TEntity>> GetAsync(Expression<Func<TEntity, bool>>? filter = null,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null, string includeProperties = "")
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null, string includeProperties = "",
+        int? skip = null, int? take = null)
     {
         IQueryable<TEntity> query = _dbContext.Set<TEntity>();
 
@@ -88,6 +99,73 @@ internal class EpaRepository<TEntity, TKey> : IEpaRepository<TEntity, TKey> wher
         query = includeProperties.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
             .Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
 
-        return orderBy != null ? await orderBy(query).ToListAsync() : await query.ToListAsync();
+        if (orderBy != null)
+        {
+            query = orderBy(query);
+            if (skip.HasValue) query = query.Skip(skip.Value);
+            if (take.HasValue) query = query.Take(take.Value);
+
+            return await query.ToListAsync();
+        }
+        
+        return await query.ToListAsync();
+    }
+
+    /// <inheritdoc cref="IEpaRepository{TEntity,TKey}.SingleOrDefault"/>
+    public TEntity? SingleOrDefault(Expression<Func<TEntity, bool>>? filter = null, string includeProperties = "")
+    {
+        IQueryable<TEntity?> query = _dbContext.Set<TEntity>();
+
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+
+        query = includeProperties.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+            .Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
+
+        return query.SingleOrDefault();
+    }
+
+    /// <inheritdoc cref="IEpaRepository{TEntity,TKey}.SingleOrDefaultAsync"/>
+    public async Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>>? filter = null, string includeProperties = "")
+    {
+        IQueryable<TEntity> query = _dbContext.Set<TEntity>();
+
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+
+        query = includeProperties.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+            .Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
+
+        return await query.SingleOrDefaultAsync();
+    }
+
+    /// <inheritdoc cref="IEpaRepository{TEntity,TKey}.Any"/>
+    public bool Any(Expression<Func<TEntity, bool>>? filter = null)
+    {
+        IQueryable<TEntity> query = _dbContext.Set<TEntity>();
+
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+
+        return query.Any();
+    }
+
+    /// <inheritdoc cref="IEpaRepository{TEntity,TKey}.AnyAsync"/>
+    public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>>? filter = null)
+    {
+        IQueryable<TEntity> query = _dbContext.Set<TEntity>();
+
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+
+        return await query.AnyAsync();
     }
 }

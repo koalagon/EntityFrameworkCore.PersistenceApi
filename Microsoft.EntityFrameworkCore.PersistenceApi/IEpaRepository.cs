@@ -40,19 +40,39 @@ public interface IEpaRepository<TEntity, in TKey> where TEntity : class
     /// <summary>
     /// Gets a single entity with the given identifier.
     /// </summary>
-    TEntity GetById(TKey key);
+    TEntity? GetById(TKey key);
 
     /// <summary>
     /// Returns a result set.
     /// </summary>
     IReadOnlyCollection<TEntity> Get(Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-        string includeProperties = "");
+        string includeProperties = "", int? skip = null, int? take = null);
 
     /// <summary>
     /// Asynchronously returns a result set.
     /// </summary>
     Task<IReadOnlyCollection<TEntity>> GetAsync(Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-        string includeProperties = "");
+        string includeProperties = "", int? skip = null, int? take = null);
+
+    /// <summary>
+    /// Returns single entity with the predicate.
+    /// </summary>
+    TEntity? SingleOrDefault(Expression<Func<TEntity, bool>>? filter = null, string includeProperties = "");
+
+    /// <summary>
+    /// Asynchronously returns single entity with the predicate.
+    /// </summary>
+    Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>>? filter = null, string includeProperties = "");
+
+    /// <summary>
+    /// Determines whether any element of a sequence exists or satisfies a condition.
+    /// </summary>
+    bool Any(Expression<Func<TEntity, bool>>? filter = null);
+
+    /// <summary>
+    /// Asynchronously determines whether any element of a sequence exists or satisfies a condition.
+    /// </summary>
+    Task<bool> AnyAsync(Expression<Func<TEntity, bool>>? filter = null);
 }
