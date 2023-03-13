@@ -49,7 +49,7 @@ public class UnitOfWork : IUnitOfWork
             throw new InvalidOperationException($"The {typeof(TRepository)} is not registered. Does your interface inherit IEpaRepository?");
         }
 
-        return (TRepository)_repositories[type];
+        return (TRepository)_repositories[type]!;
     }
 
     /// <inheritdoc cref="IEpaDbContext.SaveChanges"/>

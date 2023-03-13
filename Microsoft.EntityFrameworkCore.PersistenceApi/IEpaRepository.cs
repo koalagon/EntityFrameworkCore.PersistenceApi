@@ -45,6 +45,9 @@ public interface IEpaRepository<TEntity, in TKey> where TEntity : class
     /// <summary>
     /// Returns a result set.
     /// </summary>
+    /// <remarks>
+    /// skip and take only works if the orderBy statement is provided.
+    /// </remarks>
     IReadOnlyCollection<TEntity> Get(Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         string includeProperties = "", int? skip = null, int? take = null);
@@ -52,6 +55,9 @@ public interface IEpaRepository<TEntity, in TKey> where TEntity : class
     /// <summary>
     /// Asynchronously returns a result set.
     /// </summary>
+    /// <remarks>
+    /// skip and take only works if the orderBy statement is provided.
+    /// </remarks>
     Task<IReadOnlyCollection<TEntity>> GetAsync(Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         string includeProperties = "", int? skip = null, int? take = null);
@@ -69,10 +75,20 @@ public interface IEpaRepository<TEntity, in TKey> where TEntity : class
     /// <summary>
     /// Determines whether any element of a sequence exists or satisfies a condition.
     /// </summary>
-    bool Any(Expression<Func<TEntity, bool>>? filter = null);
+    bool Any(Expression<Func<TEntity, bool>> filter);
 
     /// <summary>
     /// Asynchronously determines whether any element of a sequence exists or satisfies a condition.
     /// </summary>
-    Task<bool> AnyAsync(Expression<Func<TEntity, bool>>? filter = null);
+    Task<bool> AnyAsync(Expression<Func<TEntity, bool>> filter);
+
+    /// <summary>
+    /// Determines whether all element of a sequence exists or satisfies a condition.
+    /// </summary>
+    bool All(Expression<Func<TEntity, bool>> filter);
+
+    /// <summary>
+    /// Asynchronously determines whether all element of a sequence exists or satisfies a condition.
+    /// </summary>
+    Task<bool> AllAsync(Expression<Func<TEntity, bool>> filter);
 }

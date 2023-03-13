@@ -144,28 +144,14 @@ internal class EpaRepository<TEntity, TKey> : IEpaRepository<TEntity, TKey> wher
     }
 
     /// <inheritdoc cref="IEpaRepository{TEntity,TKey}.Any"/>
-    public bool Any(Expression<Func<TEntity, bool>>? filter = null)
-    {
-        IQueryable<TEntity> query = _dbContext.Set<TEntity>();
-
-        if (filter != null)
-        {
-            query = query.Where(filter);
-        }
-
-        return query.Any();
-    }
+    public bool Any(Expression<Func<TEntity, bool>> filter) => _dbContext.Set<TEntity>().Any(filter);
 
     /// <inheritdoc cref="IEpaRepository{TEntity,TKey}.AnyAsync"/>
-    public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>>? filter = null)
-    {
-        IQueryable<TEntity> query = _dbContext.Set<TEntity>();
+    public Task<bool> AnyAsync(Expression<Func<TEntity, bool>> filter) => _dbContext.Set<TEntity>().AnyAsync(filter);
 
-        if (filter != null)
-        {
-            query = query.Where(filter);
-        }
+    /// <inheritdoc cref="IEpaRepository{TEntity,TKey}.All"/>
+    public bool All(Expression<Func<TEntity, bool>> filter) => _dbContext.Set<TEntity>().All(filter);
 
-        return await query.AnyAsync();
-    }
+    /// <inheritdoc cref="IEpaRepository{TEntity,TKey}.AllAsync"/>
+    public Task<bool> AllAsync(Expression<Func<TEntity, bool>> filter) => _dbContext.Set<TEntity>().AllAsync(filter);
 }
