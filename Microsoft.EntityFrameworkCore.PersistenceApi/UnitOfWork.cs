@@ -1,4 +1,5 @@
 ﻿using Castle.DynamicProxy;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.Collections;
 using System.Linq.Dynamic.Core;
 
@@ -65,6 +66,9 @@ public class UnitOfWork : IUnitOfWork
         var queryable = _dbContext.Set<TEntity>().AsNoTracking().AsQueryable();
         return typeof(TEntity).IsAssignableTo(typeof(IDeletable)) ? queryable.Where($"{nameof(IDeletable.IsDeleted)} == false") : queryable;
     }
+
+    /// <inheritdoc cref="IUnitOfWork.Database"/>
+    public DatabaseFacade Database => _dbContext.Database;
 
     #region Dispose
     private bool _disposed;

@@ -1,4 +1,6 @@
-﻿namespace Microsoft.EntityFrameworkCore.PersistenceApi;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+
+namespace Microsoft.EntityFrameworkCore.PersistenceApi;
 
 /// <summary>
 /// Represents the interface(s) for unit of work.
@@ -35,4 +37,9 @@ public interface IUnitOfWork : IDisposable
     /// <typeparam name="TEntity">The entity</typeparam>
     /// <returns><see cref="IQueryable"/></returns>
     IQueryable<TEntity> Queryable<TEntity>() where TEntity : class;
+
+    /// <summary>
+    /// Creates a Database instance for this context that allows for creation/deletion/existence checks for the underlying database.
+    /// </summary>
+    DatabaseFacade Database { get; }
 }
