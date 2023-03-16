@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure;
-
-namespace Microsoft.EntityFrameworkCore.PersistenceApi;
+﻿namespace Microsoft.EntityFrameworkCore.PersistenceApi;
 
 /// <summary>
 /// Represents the interface(s) for unit of work.
@@ -39,7 +37,7 @@ public interface IUnitOfWork : IDisposable
     IQueryable<TEntity> Queryable<TEntity>() where TEntity : class;
 
     /// <summary>
-    /// Creates a Database instance for this context that allows for creation/deletion/existence checks for the underlying database.
+    /// Executes the raw sql against the database.
     /// </summary>
-    DatabaseFacade Database { get; }
+    int ExecuteSqlRaw(string query, params object[] parameters);
 }
