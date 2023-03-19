@@ -58,7 +58,7 @@ internal class EpaRepository<TEntity, TKey> : IEpaRepository<TEntity, TKey> wher
     }
 
     /// <inheritdoc cref="IEpaRepository{TEntity,TKey}.Get"/>
-    public List<TEntity> Get(Expression<Func<TEntity, bool>>? filter = null,
+    public IReadOnlyCollection<TEntity> Get(Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null, string includeProperties = "",
         int? skip = null, int? take = null)
     {
@@ -85,7 +85,7 @@ internal class EpaRepository<TEntity, TKey> : IEpaRepository<TEntity, TKey> wher
     }
 
     /// <inheritdoc cref="IEpaRepository{TEntity,TKey}.GetAsync"/>
-    public async Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>>? filter = null,
+    public async Task<IReadOnlyCollection<TEntity>> GetAsync(Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null, string includeProperties = "",
         int? skip = null, int? take = null)
     {

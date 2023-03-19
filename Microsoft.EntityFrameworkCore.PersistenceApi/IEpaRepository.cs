@@ -48,7 +48,7 @@ public interface IEpaRepository<TEntity, in TKey> where TEntity : class
     /// <remarks>
     /// skip and take only works if the orderBy statement is provided.
     /// </remarks>
-    List<TEntity> Get(Expression<Func<TEntity, bool>>? filter = null,
+    IReadOnlyCollection<TEntity> Get(Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         string includeProperties = "", int? skip = null, int? take = null);
 
@@ -58,7 +58,7 @@ public interface IEpaRepository<TEntity, in TKey> where TEntity : class
     /// <remarks>
     /// skip and take only works if the orderBy statement is provided.
     /// </remarks>
-    Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>>? filter = null,
+    Task<IReadOnlyCollection<TEntity>> GetAsync(Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         string includeProperties = "", int? skip = null, int? take = null);
 
