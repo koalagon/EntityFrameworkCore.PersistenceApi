@@ -114,7 +114,7 @@ internal class EpaRepository<TEntity, TKey> : IEpaRepository<TEntity, TKey> wher
     /// <inheritdoc cref="IEpaRepository{TEntity,TKey}.SingleOrDefault"/>
     public TEntity? SingleOrDefault(Expression<Func<TEntity, bool>>? filter = null, string includeProperties = "")
     {
-        IQueryable<TEntity?> query = _dbContext.Set<TEntity>();
+        IQueryable<TEntity> query = _dbContext.Set<TEntity>();
 
         if (filter != null)
         {
