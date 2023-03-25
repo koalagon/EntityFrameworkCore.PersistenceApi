@@ -9,6 +9,8 @@ namespace Microsoft.EntityFrameworkCore.WebApplication.Pages
         private readonly IUnitOfWork _unitOfWork;
         public IReadOnlyCollection<Order> FilteredOrders;
         public IReadOnlyCollection<Order> AllOrders;
+        public IReadOnlyCollection<Order> SkipAndTakeOrders;
+        public IPagedList<Order> PagedList;
         public Order? Order;
 
 
@@ -17,12 +19,14 @@ namespace Microsoft.EntityFrameworkCore.WebApplication.Pages
             _unitOfWork = unitOfWork;
         }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(int? pageNum = 1)
         {
             var orderRepository = _unitOfWork.GetRepository<IOrderRepository>();
             FilteredOrders = await _unitOfWork.Queryable<Order>().Where(OrderFilters.NameFilter).OrderByDescending(b => b.AddedAt).ToListAsync();
             AllOrders = await _unitOfWork.Queryable<Order>().ToListAsync();
+            SkipAndTakeOrders = await orderRepository.GetAsync(o => !o.IsDeleted, skip: 1, take: 2);
             Order = _unitOfWork.Queryable<Order>().FirstOrDefault(q => q.Name.Contains("World"));
+            PagedList = await _unitOfWork.Queryable<Order>().OrderBy(o => o.Name).ToPagedListAsync(pageNum.Value, 5);
         }
 
         public async Task<IActionResult> OnPostAddAsync(string name)

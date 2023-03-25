@@ -11,9 +11,11 @@
     <PackageProjectUrl>https://github.com/koalagon/EntityFrameworkCore.PersistenceApi</PackageProjectUrl>
     <RepositoryUrl>https://github.com/koalagon/EntityFrameworkCore.PersistenceApi</RepositoryUrl>
     <PackageId>EntityFrameworkCore.PersistenceApi</PackageId>
-	<VersionPrefix>1.3.3</VersionPrefix>
+	<VersionPrefix>1.4.0</VersionPrefix>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<PackageLicenseFile>LICENSE</PackageLicenseFile>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageReleaseNotes>Supports paged list.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

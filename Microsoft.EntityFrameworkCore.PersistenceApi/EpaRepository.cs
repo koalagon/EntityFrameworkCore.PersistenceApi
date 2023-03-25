@@ -75,11 +75,10 @@ internal class EpaRepository<TEntity, TKey> : IEpaRepository<TEntity, TKey> wher
         if (orderBy != null)
         {
             query = orderBy(query);
-            if (skip.HasValue) query = query.Skip(skip.Value);
-            if (take.HasValue) query = query.Take(take.Value);
-
-            return query.ToList();
         }
+
+        if (skip.HasValue) query = query.Skip(skip.Value);
+        if (take.HasValue) query = query.Take(take.Value);
 
         return query.ToList();
     }
@@ -102,12 +101,11 @@ internal class EpaRepository<TEntity, TKey> : IEpaRepository<TEntity, TKey> wher
         if (orderBy != null)
         {
             query = orderBy(query);
-            if (skip.HasValue) query = query.Skip(skip.Value);
-            if (take.HasValue) query = query.Take(take.Value);
-
-            return await query.ToListAsync();
         }
-        
+
+        if (skip.HasValue) query = query.Skip(skip.Value);
+        if (take.HasValue) query = query.Take(take.Value);
+
         return await query.ToListAsync();
     }
 

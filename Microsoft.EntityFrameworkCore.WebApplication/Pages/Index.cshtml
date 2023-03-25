@@ -4,105 +4,215 @@
     ViewData["Title"] = "Home page";
 }
 
+<div class="row" style="padding: 30px;">
+    <div class="col-12 mb-3">
+        <h4>New order</h4>
+        <form method="post" asp-page-handler="Add">
+            <input type="text" name="name" class="form-control mb-1" />
+            <input type="submit" class="btn btn-primary" />
+        </form>
+    </div>
 
-<h4>New order</h4>
-<form method="post" asp-page-handler="Add">
-    <input type="text" name="name" />
-    <input type="submit" />
-</form>
+    <div class="col-12 mb-3">
+        <h4>The first order having "World" name</h4>
 
-<br />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="padding-right: 10px;">ID</th>
+                    <th style="padding-right: 10px;">Name</th>
+                    <th style="padding-right: 10px;">AddedAt</th>
+                    <th style="padding-right: 10px;">Functions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Order != null)
+                {
+                    <tr>
+                        <td style="padding-right: 10px;">@Model.Order.Id</td>
+                        <td style="padding-right: 10px;">@Model.Order.Name</td>
+                        <td style="padding-right: 10px;">@Model.Order.AddedAt</td>
+                        <td style="padding-right: 10px;">
+                            <form method="post" asp-page-handler="Delete">
+                                <input type="hidden" name="id" value="@Model.Order.Id" />
+                                <input type="submit" value="Delete" />
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
-<h4>The first order having "World" name</h4>
+    <div class="col-12 mb-3">
+        <h4>Orders having "Hello" name</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="padding-right: 10px;">ID</th>
+                    <th style="padding-right: 10px;">Name</th>
+                    <th style="padding-right: 10px;">AddedAt</th>
+                    <th style="padding-right: 10px;">Functions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.FilteredOrders)
+                {
+                    <tr>
+                        <td style="padding-right: 10px;">@item.Id</td>
+                        <td style="padding-right: 10px;">@item.Name</td>
+                        <td style="padding-right: 10px;">@item.AddedAt</td>
+                        <td style="padding-right: 10px;">
+                            <form method="post" asp-page-handler="Delete">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <input type="submit" value="Delete" />
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
-<table>
-    <thead>
-        <tr>
-            <th style="padding-right: 10px;">ID</th>
-            <th style="padding-right: 10px;">Name</th>
-            <th style="padding-right: 10px;">AddedAt</th>
-            <th style="padding-right: 10px;">Functions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.Order != null)
-        {
+    <div class="col-12 mb-3">
+        <h4>All orders</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="padding-right: 10px;">ID</th>
+                    <th style="padding-right: 10px;">Name</th>
+                    <th style="padding-right: 10px;">AddedAt</th>
+                    <th style="padding-right: 10px;">Functions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.AllOrders)
+                {
+                    <tr>
+                        <td style="padding-right: 10px;">@item.Id</td>
+                        <td style="padding-right: 10px;">@item.Name</td>
+                        <td style="padding-right: 10px;">@item.AddedAt</td>
+                        <td style="padding-right: 10px;">
+                            <form method="post" asp-page-handler="Delete" style="display: inline">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <input type="submit" value="Hard Delete" />
+                            </form>
+                            <form method="post" asp-page-handler="SoftDelete" style="display: inline">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <input type="submit" value="Soft Delete" />
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-12 mb-3">
+        <h4>Orders Skip & Take</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="padding-right: 10px;">ID</th>
+                    <th style="padding-right: 10px;">Name</th>
+                    <th style="padding-right: 10px;">AddedAt</th>
+                    <th style="padding-right: 10px;">Functions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.SkipAndTakeOrders)
+                {
+                    <tr>
+                        <td style="padding-right: 10px;">@item.Id</td>
+                        <td style="padding-right: 10px;">@item.Name</td>
+                        <td style="padding-right: 10px;">@item.AddedAt</td>
+                        <td style="padding-right: 10px;">
+                            <form method="post" asp-page-handler="Delete" style="display: inline">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <input type="submit" value="Hard Delete" />
+                            </form>
+                            <form method="post" asp-page-handler="SoftDelete" style="display: inline">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <input type="submit" value="Soft Delete" />
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-12 mb-3">
+        <h4>Paged List</h4>
+        <table class="table">
+            <thead>
             <tr>
-                <td style="padding-right: 10px;">@Model.Order.Id</td>
-                <td style="padding-right: 10px;">@Model.Order.Name</td>
-                <td style="padding-right: 10px;">@Model.Order.AddedAt</td>
-                <td style="padding-right: 10px;">
-                    <form method="post" asp-page-handler="Delete">
-                        <input type="hidden" name="id" value="@Model.Order.Id" />
-                        <input type="submit" value="Delete" />
-                    </form>
-                </td>
+                <th style="padding-right: 10px;">ID</th>
+                <th style="padding-right: 10px;">Name</th>
+                <th style="padding-right: 10px;">AddedAt</th>
+                <th style="padding-right: 10px;">Functions</th>
             </tr>
-        }
-    </tbody>
-</table>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.PagedList.Items)
+            {
+                <tr>
+                    <td style="padding-right: 10px;">@item.Id</td>
+                    <td style="padding-right: 10px;">@item.Name</td>
+                    <td style="padding-right: 10px;">@item.AddedAt</td>
+                    <td style="padding-right: 10px;">
+                        <form method="post" asp-page-handler="Delete" style="display: inline">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <input type="submit" value="Hard Delete" />
+                        </form>
+                        <form method="post" asp-page-handler="SoftDelete" style="display: inline">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <input type="submit" value="Soft Delete" />
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
 
-
-<br />
-
-<h4>Orders having "Hello" name</h4>
-<table>
-    <thead>
-        <tr>
-            <th style="padding-right: 10px;">ID</th>
-            <th style="padding-right: 10px;">Name</th>
-            <th style="padding-right: 10px;">AddedAt</th>
-            <th style="padding-right: 10px;">Functions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.FilteredOrders)
-        {
-            <tr>
-                <td style="padding-right: 10px;">@item.Id</td>
-                <td style="padding-right: 10px;">@item.Name</td>
-                <td style="padding-right: 10px;">@item.AddedAt</td>
-                <td style="padding-right: 10px;">
-                    <form method="post" asp-page-handler="Delete">
-                        <input type="hidden" name="id" value="@item.Id" />
-                        <input type="submit" value="Delete" />
-                    </form>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-<br />
-
-<h4>All orders</h4>
-<table>
-    <thead>
-        <tr>
-            <th style="padding-right: 10px;">ID</th>
-            <th style="padding-right: 10px;">Name</th>
-            <th style="padding-right: 10px;">AddedAt</th>
-            <th style="padding-right: 10px;">Functions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.AllOrders)
-        {
-            <tr>
-                <td style="padding-right: 10px;">@item.Id</td>
-                <td style="padding-right: 10px;">@item.Name</td>
-                <td style="padding-right: 10px;">@item.AddedAt</td>
-                <td style="padding-right: 10px;">
-                    <form method="post" asp-page-handler="Delete" style="display: inline">
-                        <input type="hidden" name="id" value="@item.Id" />
-                        <input type="submit" value="Hard Delete" />
-                    </form>
-                    <form method="post" asp-page-handler="SoftDelete" style="display: inline">
-                        <input type="hidden" name="id" value="@item.Id" />
-                        <input type="submit" value="Soft Delete" />
-                    </form>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                @if (Model.PagedList.CurrentPage > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-page="/Index">First</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" asp-page="/Index" asp-route-pageNum="@(Model.PagedList.CurrentPage - 1)" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                }
+                
+                @for (var page = Model.PagedList.StartPage; @page <= Model.PagedList.EndPage; @page++)
+                {
+                    if (page == Model.PagedList.CurrentPage)
+                    {
+                        <li class="page-item active" aria-current="page"><a class="page-link" href="#">@(page)</a></li>
+                    }
+                    else
+                    {
+                        <li class="page-item"><a class="page-link" asp-page="/Index" asp-route-pageNum="@(page)">@(page)</a></li>
+                    }
+                }
+                
+                @if (Model.PagedList.CurrentPage < Model.PagedList.TotalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-page="/Index" asp-route-pageNum="@(Model.PagedList.CurrentPage + 1)" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" asp-page="/Index"  asp-route-pageNum="@Model.PagedList.TotalPages">Last</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+</div>
