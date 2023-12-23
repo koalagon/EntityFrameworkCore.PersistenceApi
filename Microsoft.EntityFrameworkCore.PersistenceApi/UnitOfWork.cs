@@ -12,6 +12,9 @@ public class UnitOfWork : IUnitOfWork
     private readonly IEpaDbContext _dbContext;
     private readonly Hashtable _repositories;
     private readonly ProxyGenerator _proxyGenerator = new();
+    private static readonly List<Type> _assemblies = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes())
+                .Where(p => p.IsInterface && p.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEpaRepository<,>)))
+                .ToList();
 
     /// <summary>
     /// Constructs a new unit of work using <see cref="IEpaDbContext"/>.
@@ -22,9 +25,7 @@ public class UnitOfWork : IUnitOfWork
         _dbContext = dbContext;
         _repositories ??= new Hashtable();
 
-        AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes())
-            .Where(p => p.IsInterface && p.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEpaRepository<,>)))
-            .ToList().ForEach(c =>
+        _assemblies.ForEach(c =>
             {
                 var proxy = _proxyGenerator.CreateInterfaceProxyWithoutTarget(c, new EpaRepositoryInterceptor(_dbContext));
                 if (!_repositories.ContainsKey(c))
