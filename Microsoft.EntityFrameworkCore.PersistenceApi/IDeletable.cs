@@ -14,5 +14,6 @@
         /// Represent when the entity is deleted.
         /// </summary>
         DateTime? DeletedAt { get; set; }
+		
     }
 }
